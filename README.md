@@ -23,7 +23,7 @@ Root-level content:
 
 ### View the landing page locally
 
-Open [02_LANDING_PAGE.html](file:///h:/Hyper%20Vibe%20Coding%20Course/02_LANDING_PAGE.html) in your browser.
+Open `02_LANDING_PAGE.html` in your browser.
 
 ### Publish the landing page (GitHub Pages)
 
@@ -32,6 +32,63 @@ This repo includes a GitHub Pages deployment workflow. To enable it:
 1. In GitHub, go to **Settings → Pages**
 2. Under **Build and deployment**, select **GitHub Actions**
 3. Push to `main` and the workflow will deploy
+
+## Usage Examples
+
+### Create a feature branch (Git-flow style)
+
+```bash
+git checkout develop
+git pull
+git checkout -b feature/landing-page-cta
+```
+
+### Open a PR
+
+- Target branch: `develop`
+- Ensure required checks pass (CI / markdownlint)
+
+### Validate workflows and templates locally (PowerShell)
+
+```powershell
+$ErrorActionPreference = "Stop"
+
+$code = @'
+from pathlib import Path
+import sys
+import yaml
+
+yaml_files = [
+  ".github/workflows/ci.yml",
+  ".github/workflows/pages.yml",
+  ".github/ISSUE_TEMPLATE/bug_report.yml",
+  ".github/ISSUE_TEMPLATE/feature_request.yml",
+  ".github/ISSUE_TEMPLATE/config.yml",
+]
+
+missing = [p for p in yaml_files if not Path(p).exists()]
+if missing:
+  print("Missing required files:", *missing, sep="\\n- ")
+  sys.exit(1)
+
+for p in yaml_files:
+  yaml.safe_load(Path(p).read_text(encoding="utf-8"))
+
+print("YAML validated OK.")
+'@
+
+$code | python -
+```
+
+## Troubleshooting
+
+### Push fails with 403 (HTTPS)
+
+If you see `Permission denied ... (403)`, Git is authenticating as a GitHub account without write access. Update your credentials or grant the account write permissions to the repo.
+
+### Push fails with `Permission denied (publickey)` (SSH)
+
+This means your SSH key is not added to the GitHub account (or the account does not have repo write access). Add your public key under **GitHub → Settings → SSH and GPG keys**, then retry the push.
 
 ## Contribution Guidelines
 
@@ -84,4 +141,3 @@ Recommended branch protection for `develop`:
 ## License
 
 Add a license file if/when you decide on licensing.
-

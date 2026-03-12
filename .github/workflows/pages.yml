@@ -1,5 +1,6 @@
 name: Deploy Landing Page
 
+# Deploys the static landing page at repo root to GitHub Pages.
 on:
   push:
     branches:
@@ -25,6 +26,11 @@ jobs:
       - name: Prepare site artifact
         shell: bash
         run: |
+          set -euo pipefail
+          if [ ! -f "02_LANDING_PAGE.html" ]; then
+            echo "Missing 02_LANDING_PAGE.html at repo root." >&2
+            exit 1
+          fi
           mkdir -p dist
           cp 02_LANDING_PAGE.html dist/index.html
 
