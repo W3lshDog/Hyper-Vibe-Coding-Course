@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { useAuthStore } from '../context/auth';
 
 export function Login() {
   const navigate = useNavigate();
@@ -25,8 +24,12 @@ export function Login() {
       
       if (error) throw error;
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -133,8 +136,12 @@ export function Register() {
       // Depending on email confirmation settings, user might need to verify email
       // For now, assume they can login or show a message
       navigate('/login'); // Redirect to login or dashboard
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }

@@ -30,7 +30,7 @@ export default function Dashboard() {
       if (error) {
         console.error('Error fetching enrollments:', error);
       } else {
-        // @ts-ignore - Supabase types are tricky with joins, trusting the shape here
+        // @ts-expect-error - Supabase types are tricky with joins, trusting the shape here
         setEnrollments(data as EnrolledCourse[]);
       }
       setLoading(false);

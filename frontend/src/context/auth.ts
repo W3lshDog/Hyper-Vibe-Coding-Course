@@ -4,10 +4,10 @@ import { supabase } from '../lib/supabase'
 
 interface AuthState {
   user: User | null
-  session: any | null
+  session: unknown | null
   loading: boolean
   setUser: (user: User | null) => void
-  setSession: (session: any | null) => void
+  setSession: (session: unknown | null) => void
   setLoading: (loading: boolean) => void
   signOut: () => Promise<void>
 }

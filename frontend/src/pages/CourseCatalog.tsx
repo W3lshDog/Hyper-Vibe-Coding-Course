@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Course } from '../types/database';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
-import { Clock, BarChart, Star } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 export default function CourseCatalog() {
   const [courses, setCourses] = useState<Course[]>([]);

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { Course, Lesson } from '../types/database';
 import { useAuthStore } from '../context/auth';
 import { Button } from '../components/ui/Button';
-import { CheckCircle, PlayCircle, Lock } from 'lucide-react';
+import { PlayCircle, Lock } from 'lucide-react';
 
 export default function CourseDetail() {
   const { id } = useParams<{ id: string }>();
