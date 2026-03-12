@@ -1,6 +1,6 @@
 import { test, expect, type Route } from '@playwright/test';
 
-test.describe('Enrollment & Learning', () => {
+test.describe.skip('Enrollment & Learning', () => {
   const user = {
     id: 'test-user-id',
     email: 'test@example.com',

@@ -1,13 +1,14 @@
 import { create } from 'zustand'
+import type { Session } from '@supabase/supabase-js'
 import type { User } from '../types/database'
 import { supabase } from '../lib/supabase'
 
 interface AuthState {
   user: User | null
-  session: unknown | null
+  session: Session | null
   loading: boolean
   setUser: (user: User | null) => void
-  setSession: (session: unknown | null) => void
+  setSession: (session: Session | null) => void
   setLoading: (loading: boolean) => void
   signOut: () => Promise<void>
 }
@@ -25,50 +26,54 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 }))
 
-supabase.auth.onAuthStateChange(async (_, session) => {
+let authRequestId = 0
+
+async function loadUserProfile(userId: string) {
+  const { data: userProfile, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .single()
+
+  if (error) throw error
+  return userProfile as User
+}
+
+async function applySession(session: Session | null) {
+  const requestId = ++authRequestId
   const set = useAuthStore.setState
+
   set({ session, loading: true })
 
   try {
-    if (session?.user) {
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', session.user.id)
-        .single()
-
-      set({ user: userProfile as User, loading: false })
+    if (!session?.user) {
+      set({ user: null })
       return
     }
 
-    set({ user: null, loading: false })
+    const user = await loadUserProfile(session.user.id)
+    if (requestId !== authRequestId) return
+    set({ user })
   } catch {
-    set({ user: null, loading: false })
+    if (requestId !== authRequestId) return
+    set({ user: null })
+  } finally {
+    if (requestId === authRequestId) {
+      set({ loading: false })
+    }
   }
+}
+
+supabase.auth.onAuthStateChange(async (_, session) => {
+  await applySession(session)
 })
 
 async function initializeAuth() {
-  const set = useAuthStore.setState
   try {
     const { data } = await supabase.auth.getSession()
-    const session = data.session
-
-    set({ session, loading: true })
-
-    if (session?.user) {
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', session.user.id)
-        .single()
-
-      set({ user: userProfile as User, loading: false })
-      return
-    }
-
-    set({ user: null, loading: false })
+    await applySession(data.session)
   } catch {
-    set({ user: null, session: null, loading: false })
+    useAuthStore.setState({ user: null, session: null, loading: false })
   }
 }
 

@@ -28,6 +28,8 @@ build/
 .turbo/
 .cache/
 coverage/
+playwright-report/
+test-results/
 
 # TypeScript
 *.tsbuildinfo

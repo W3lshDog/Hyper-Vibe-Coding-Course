@@ -16,6 +16,7 @@ export default function LessonPlayer() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -25,14 +26,21 @@ export default function LessonPlayer() {
 
     async function fetchData() {
       if (!courseId) return;
+      setError(null);
 
       // Verify enrollment
-      const { data: enrollment } = await supabase
+      const { data: enrollment, error: enrollmentError } = await supabase
         .from('enrollments')
         .select('id')
         .eq('user_id', user!.id)
         .eq('course_id', courseId)
         .single();
+
+      if (enrollmentError) {
+        setError('Failed to verify enrollment');
+        setLoading(false);
+        return;
+      }
 
       if (!enrollment) {
         navigate(`/courses/${courseId}`);
@@ -40,33 +48,52 @@ export default function LessonPlayer() {
       }
 
       // Fetch course
-      const { data: courseData } = await supabase
+      const { data: courseData, error: courseError } = await supabase
         .from('courses')
         .select('*')
         .eq('id', courseId)
         .single();
+      if (courseError || !courseData) {
+        setError('Failed to load course');
+        setLoading(false);
+        return;
+      }
       setCourse(courseData);
 
       // Fetch lessons
-      const { data: lessonsData } = await supabase
+      const { data: lessonsData, error: lessonsError } = await supabase
         .from('lessons')
         .select('*')
         .eq('course_id', courseId)
         .order('order_index');
       
-      if (lessonsData) {
-        setLessons(lessonsData);
+      if (lessonsError) {
+        setError('Failed to load lessons');
+        setLoading(false);
+        return;
       }
+      const resolvedLessons = lessonsData ?? [];
+      setLessons(resolvedLessons);
 
       // Fetch progress
-      const { data: progressData } = await supabase
-        .from('progress')
-        .select('lesson_id')
-        .eq('user_id', user!.id)
-        .eq('completed', true);
+      if (resolvedLessons.length > 0) {
+        const lessonIds = resolvedLessons.map((lesson) => lesson.id);
+        const { data: progressData, error: progressError } = await supabase
+          .from('progress')
+          .select('lesson_id')
+          .eq('user_id', user!.id)
+          .eq('completed', true)
+          .in('lesson_id', lessonIds);
       
-      if (progressData) {
-        setCompletedLessons(new Set(progressData.map(p => p.lesson_id)));
+        if (progressError) {
+          setError('Failed to load progress');
+          setLoading(false);
+          return;
+        }
+
+        setCompletedLessons(new Set((progressData ?? []).map((p) => p.lesson_id)));
+      } else {
+        setCompletedLessons(new Set());
       }
 
       setLoading(false);
@@ -86,20 +113,29 @@ export default function LessonPlayer() {
     setCompletedLessons(newCompleted);
 
     // DB update
-    await supabase.from('progress').upsert({
+    const { error: progressUpsertError } = await supabase.from('progress').upsert({
       user_id: user.id,
       lesson_id: currentLesson.id,
       completed: true,
       completed_at: new Date().toISOString()
     });
+    if (progressUpsertError) {
+      setCompletedLessons(completedLessons);
+      return;
+    }
 
     // Update enrollment progress
-    const progressPercent = (newCompleted.size / lessons.length) * 100;
-    await supabase.from('enrollments').update({
+    const progressPercent = lessons.length > 0
+      ? Math.min(100, Math.round((newCompleted.size / lessons.length) * 100))
+      : 0;
+    const { error: enrollmentUpdateError } = await supabase.from('enrollments').update({
       progress_percentage: progressPercent,
       // If all completed
       ...(newCompleted.size === lessons.length ? { completed_at: new Date().toISOString() } : {})
     }).eq('user_id', user.id).eq('course_id', courseId);
+    if (enrollmentUpdateError) {
+      return;
+    }
   };
 
   const handleNext = () => {
@@ -115,6 +151,7 @@ export default function LessonPlayer() {
   };
 
   if (loading) return <div className="p-8 text-center">Loading learning environment...</div>;
+  if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
   if (!course || !currentLesson) return <div className="p-8 text-center">Course content not found</div>;
 
   return (
