@@ -6,6 +6,7 @@ import CourseCatalog from './pages/CourseCatalog';
 import CourseDetail from './pages/CourseDetail';
 import LessonPlayer from './pages/LessonPlayer';
 import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 import { useAuthStore } from './context/auth';
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
@@ -40,6 +41,7 @@ function App() {
               </PrivateRoute>
             } 
           />
+          <Route path="*" element={<NotFound />} />
         </Route>
         {/* Lesson Player has its own layout */}
         <Route 
