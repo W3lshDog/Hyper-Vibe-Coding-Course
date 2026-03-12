@@ -1,7 +1,19 @@
+import path from 'node:path'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// Vanilla HTML/CSS/JS site - no framework plugins needed
 export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    fs: {
+      allow: [path.resolve(__dirname, '..')],
+    },
+  },
   build: {
     outDir: 'dist',
   },
