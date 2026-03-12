@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { User } from '../types/database'
+import type { User } from '../types/database'
 import { supabase } from '../lib/supabase'
 
 interface AuthState {
