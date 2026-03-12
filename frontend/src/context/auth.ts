@@ -1,13 +1,13 @@
 import { create } from 'zustand'
-import type { User } from '../types/database'
+import { User } from '../types/database'
 import { supabase } from '../lib/supabase'
 
 interface AuthState {
   user: User | null
-  session: any | null
+  session: unknown | null
   loading: boolean
   setUser: (user: User | null) => void
-  setSession: (session: any | null) => void
+  setSession: (session: unknown | null) => void
   setLoading: (loading: boolean) => void
   signOut: () => Promise<void>
 }

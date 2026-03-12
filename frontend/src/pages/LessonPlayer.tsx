@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import type { Course, Lesson } from '../types/database';
+import { Course, Lesson } from '../types/database';
 import { useAuthStore } from '../context/auth';
 import { Button } from '../components/ui/Button';
 import { CheckCircle, PlayCircle, ChevronLeft, ChevronRight } from 'lucide-react';

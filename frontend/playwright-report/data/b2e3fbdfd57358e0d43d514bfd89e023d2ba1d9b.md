@@ -1,0 +1,50 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Hyper Vibe" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]: Hyper Vibe
+        - link "Courses" [ref=e11] [cursor=pointer]:
+          - /url: /courses
+      - generic [ref=e13]:
+        - link "Sign in" [ref=e14] [cursor=pointer]:
+          - /url: /login
+          - button "Sign in" [ref=e15]
+        - link "Get Started" [ref=e16] [cursor=pointer]:
+          - /url: /register
+          - button "Get Started" [ref=e17]
+  - main [ref=e18]:
+    - generic [ref=e20]: Loading courses...
+  - contentinfo [ref=e21]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - text: Hyper Vibe
+          - paragraph [ref=e25]: Master coding with interactive courses, real-world projects, and a vibrant community. Level up your skills and launch your career.
+        - generic [ref=e26]:
+          - heading "Platform" [level=3] [ref=e27]
+          - list [ref=e28]:
+            - listitem [ref=e29]:
+              - link "Courses" [ref=e30] [cursor=pointer]:
+                - /url: /courses
+            - listitem [ref=e31]:
+              - link "Pricing" [ref=e32] [cursor=pointer]:
+                - /url: /pricing
+            - listitem [ref=e33]:
+              - link "Instructors" [ref=e34] [cursor=pointer]:
+                - /url: /instructors
+        - generic [ref=e35]:
+          - heading "Legal" [level=3] [ref=e36]
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "Privacy" [ref=e39] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e40]:
+              - link "Terms" [ref=e41] [cursor=pointer]:
+                - /url: /terms
+      - paragraph [ref=e43]: © 2026 Hyper Vibe Coding Course. All rights reserved.
+```

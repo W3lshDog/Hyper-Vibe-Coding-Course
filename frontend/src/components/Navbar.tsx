@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../context/auth';
 import { Button } from './ui/Button';
-import { Menu, X, User as UserIcon, LogOut, BookOpen } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 
 export function Navbar() {
