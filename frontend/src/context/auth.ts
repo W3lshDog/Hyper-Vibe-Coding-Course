@@ -29,39 +29,47 @@ supabase.auth.onAuthStateChange(async (_, session) => {
   const set = useAuthStore.setState
   set({ session, loading: true })
 
-  if (session?.user) {
-    // Fetch detailed user profile from public.users
-    const { data: userProfile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', session.user.id)
-      .single()
-    
-    set({ user: userProfile as User, loading: false })
-  } else {
+  try {
+    if (session?.user) {
+      const { data: userProfile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+
+      set({ user: userProfile as User, loading: false })
+      return
+    }
+
+    set({ user: null, loading: false })
+  } catch {
     set({ user: null, loading: false })
   }
 })
 
 async function initializeAuth() {
-  const { data } = await supabase.auth.getSession()
-  const session = data.session
-
   const set = useAuthStore.setState
-  set({ session, loading: true })
+  try {
+    const { data } = await supabase.auth.getSession()
+    const session = data.session
 
-  if (session?.user) {
-    const { data: userProfile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', session.user.id)
-      .single()
+    set({ session, loading: true })
 
-    set({ user: userProfile as User, loading: false })
-    return
+    if (session?.user) {
+      const { data: userProfile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+
+      set({ user: userProfile as User, loading: false })
+      return
+    }
+
+    set({ user: null, loading: false })
+  } catch {
+    set({ user: null, session: null, loading: false })
   }
-
-  set({ user: null, loading: false })
 }
 
 void initializeAuth()
