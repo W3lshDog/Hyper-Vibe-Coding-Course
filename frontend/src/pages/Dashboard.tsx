@@ -1,7 +1,7 @@
 import { useAuthStore } from '../context/auth';
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Enrollment, Course } from '../types/database';
+import type { Enrollment, Course } from '../types/database';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { PlayCircle } from 'lucide-react';
@@ -30,7 +30,6 @@ export default function Dashboard() {
       if (error) {
         console.error('Error fetching enrollments:', error);
       } else {
-        // @ts-expect-error - Supabase types are tricky with joins, trusting the shape here
         setEnrollments(data as EnrolledCourse[]);
       }
       setLoading(false);

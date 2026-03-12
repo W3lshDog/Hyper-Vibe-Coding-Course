@@ -4,12 +4,13 @@ import LandingPage from './pages/LandingPage';
 import { Login, Register } from './pages/Auth';
 import CourseCatalog from './pages/CourseCatalog';
 import CourseDetail from './pages/CourseDetail';
+import Pricing from './pages/Pricing';
 import LessonPlayer from './pages/LessonPlayer';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import { useAuthStore } from './context/auth';
 
-function PrivateRoute({ children }: { children: JSX.Element }) {
+function PrivateRoute({ children }: { children: React.ReactElement }) {
   const { user, loading } = useAuthStore();
 
   if (loading) {
@@ -31,6 +32,7 @@ function App() {
           <Route index element={<LandingPage />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="pricing" element={<Pricing />} />
           <Route path="courses" element={<CourseCatalog />} />
           <Route path="courses/:id" element={<CourseDetail />} />
           <Route 

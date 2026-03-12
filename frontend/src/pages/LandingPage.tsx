@@ -27,9 +27,9 @@ export default function LandingPage() {
                     </Link>
                   </div>
                   <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <Link to="/courses">
+                    <Link to="/pricing">
                       <Button variant="outline" size="lg" className="w-full">
-                        View Courses
+                        View Pricing
                       </Button>
                     </Link>
                   </div>

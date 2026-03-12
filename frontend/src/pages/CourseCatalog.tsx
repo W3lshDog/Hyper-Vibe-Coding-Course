@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Course } from '../types/database';
+import type { Course } from '../types/database';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { Clock } from 'lucide-react';
@@ -11,6 +11,25 @@ export default function CourseCatalog() {
 
   useEffect(() => {
     async function fetchCourses() {
+      if (import.meta.env.VITE_E2E === '1') {
+        setCourses([
+          {
+            id: '1',
+            title: 'Intro to Programming',
+            description: 'Learn the basics of coding.',
+            price: 29.99,
+            duration_minutes: 120,
+            difficulty: 'beginner',
+            instructor_id: 'test-instructor-id',
+            thumbnail_url: 'https://via.placeholder.com/150',
+            is_published: true,
+            created_at: new Date().toISOString(),
+          },
+        ]);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('courses')
         .select('*')

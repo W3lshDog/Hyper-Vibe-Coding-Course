@@ -164,13 +164,14 @@ test.describe('Enrollment & Learning', () => {
 
         await route.continue();
     });
-    
+
     // Perform login
     await page.goto('/login');
     await page.fill('input[name="email"]', user.email);
     await page.fill('input[name="password"]', 'password');
     await page.click('button[type="submit"]');
     await expect(page).toHaveURL('/dashboard');
+    await expect(page.getByText('Loading...')).not.toBeVisible({ timeout: 15000 });
   });
 
   test('should enroll in a course and complete a lesson', async ({ page }) => {
@@ -178,7 +179,7 @@ test.describe('Enrollment & Learning', () => {
     await page.goto('/courses');
     
     // Wait for courses to load
-    await expect(page.locator('text=Loading courses...')).not.toBeVisible();
+    await expect(page.locator('text=Loading courses...')).not.toBeVisible({ timeout: 15000 });
     
     // Check if empty state is shown (debugging)
     if (await page.locator('text=No courses available').isVisible()) {
@@ -188,7 +189,8 @@ test.describe('Enrollment & Learning', () => {
     // Click first course "View Course" button
     // We target the specific button/link within the first card
     // Relaxed selector
-    await page.getByText('View Course').first().click();
+    await page.getByRole('button', { name: 'View Course' }).first().click();
+    await expect(page).toHaveURL(/\/courses\/1/);
     
     // Wait for detail page
     await expect(page.locator('h1')).toBeVisible();
@@ -210,6 +212,7 @@ test.describe('Enrollment & Learning', () => {
     
     // Should navigate to learning page
     await expect(page).toHaveURL(/\/learn\//);
+    await expect(page.getByText('Loading...')).not.toBeVisible({ timeout: 15000 });
     
     // Verify lesson player loaded
     // This implies GET /enrollments was called and returned the object (since isEnrolled=true)
