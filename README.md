@@ -6,17 +6,18 @@ Course content + launch kit for **Vibe Coding Foundations (Course 1)**, includin
 
 - `assets/` Static assets (images, logos, screenshots)
 - `config/` Tooling configuration (CI lint configs, etc.)
-- `docs/` Long-form documentation (future expansion)
-- `frontend/` Landing page now (frontend app later)
-- `backend/` API app skeleton (Phase 2+)
-- `src/` Source code (future expansion)
-- `tests/` Tests (future expansion)
+- `docs/` Documentation & Course Content
+  - `course/` Proprietary Curriculum
+  - `guides/` Public Resources
+- `frontend/` Static Marketing Site (HTML/CSS/JS)
+- `tests/` Automated Test Suite
 
 Key docs:
 
+- `docs/ARCHITECTURE.md` System Design (Option A)
 - `docs/course/CURRICULUM.md` Full Course 1 curriculum
 - `docs/guides/` Launch, marketing, email sequences, sprint plans
-- `frontend/public/index.html` Static landing page
+- `frontend/public/index.html` Live landing page
 
 ## Quick Start
 
