@@ -9,7 +9,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ## 📦 WHAT YOU HAVE (6 Complete Files)
 
 ### **File 1: Course 1 Complete Curriculum** (48 KB)
-**File:** `01_COURSE1_COMPLETE_CURRICULUM.md`
+**File:** `docs/course/CURRICULUM.md`
 
 **Contains:** Everything you need to teach 4 weeks of vibe coding.
 
@@ -35,7 +35,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ---
 
 ### **File 2: Landing Page** (20 KB)
-**File:** `02_LANDING_PAGE.html`
+**File:** `frontend/public/index.html`
 
 **Contains:** Beautiful, high-converting landing page (ready to deploy).
 
@@ -62,7 +62,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ---
 
 ### **File 3: Email Sequences** (19 KB)
-**File:** `03_EMAIL_SEQUENCES.md`
+**File:** `docs/guides/EMAIL_SEQUENCES.md`
 
 **Contains:** 10 copy-paste-ready emails.
 
@@ -96,7 +96,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ---
 
 ### **File 4: Gamification System** (15 KB)
-**File:** `04_GAMIFICATION_SYSTEM.md`
+**File:** `docs/guides/GAMIFICATION.md`
 
 **Contains:** Complete points + badges + levels system.
 
@@ -131,7 +131,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ---
 
 ### **File 5: Marketing Assets** (16 KB)
-**File:** `05_MARKETING_ASSETS.md`
+**File:** `docs/guides/MARKETING.md`
 
 **Contains:** Copy-paste marketing copy for every channel.
 
@@ -170,7 +170,7 @@ This is NOT just templates. These are **production-ready, copy-paste-able resour
 ---
 
 ### **File 6: 4-Week Launch Plan** (16 KB)
-**File:** `06_4WEEK_LAUNCH_PLAN.md`
+**File:** `docs/guides/LAUNCH_PLAN.md`
 
 **Contains:** Day-by-day checklist to launch in 4 weeks.
 

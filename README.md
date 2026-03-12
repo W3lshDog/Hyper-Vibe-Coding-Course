@@ -7,23 +7,22 @@ Course content + launch kit for **Vibe Coding Foundations (Course 1)**, includin
 - `assets/` Static assets (images, logos, screenshots)
 - `config/` Tooling configuration (CI lint configs, etc.)
 - `docs/` Long-form documentation (future expansion)
+- `frontend/` Landing page now (frontend app later)
+- `backend/` API app skeleton (Phase 2+)
 - `src/` Source code (future expansion)
 - `tests/` Tests (future expansion)
 
-Root-level content:
+Key docs:
 
-- `01_COURSE1_COMPLETE_CURRICULUM.md` Full Course 1 curriculum
-- `02_LANDING_PAGE.html` Static landing page
-- `03_EMAIL_SEQUENCES.md` Email sequences (welcome, mini-course, launch)
-- `04_GAMIFICATION_SYSTEM.md` Points, badges, leaderboard system
-- `05_MARKETING_ASSETS.md` Reddit/Twitter/PH copy + positioning
-- `06_4WEEK_LAUNCH_PLAN.md` Launch plan + infrastructure setup
+- `docs/course/CURRICULUM.md` Full Course 1 curriculum
+- `docs/guides/` Launch, marketing, email sequences, sprint plans
+- `frontend/public/index.html` Static landing page
 
 ## Quick Start
 
 ### View the landing page locally
 
-Open `02_LANDING_PAGE.html` in your browser.
+Open `frontend/public/index.html` in your browser.
 
 ### Publish the landing page (GitHub Pages)
 
@@ -140,4 +139,4 @@ Recommended branch protection for `develop`:
 
 ## License
 
-Add a license file if/when you decide on licensing.
+Code is licensed under MIT (see `LICENSE`). Course content licensing is described in `docs/LICENSE_CONTENT.md`.

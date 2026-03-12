@@ -1,6 +1,6 @@
 name: Deploy Landing Page
 
-# Deploys the static landing page at repo root to GitHub Pages.
+# Deploys the static landing page at frontend/public/index.html to GitHub Pages.
 on:
   push:
     branches:
@@ -27,12 +27,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ ! -f "02_LANDING_PAGE.html" ]; then
-            echo "Missing 02_LANDING_PAGE.html at repo root." >&2
+          if [ ! -f "frontend/public/index.html" ]; then
+            echo "Missing frontend/public/index.html." >&2
             exit 1
           fi
           mkdir -p dist
-          cp 02_LANDING_PAGE.html dist/index.html
+          cp frontend/public/index.html dist/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -52,4 +52,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
