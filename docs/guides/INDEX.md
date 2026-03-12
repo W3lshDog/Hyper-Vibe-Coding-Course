@@ -6,7 +6,12 @@ Here's everything I've created for you. Use this as your roadmap.
 
 ## 🎯 START HERE
 
-**File:** `09_IMMEDIATE_ACTION_PLAN.md` (Read First!)
+**File:** `START_HERE.md` (For New Students!)
+- 👋 **Welcome Guide**: First steps to join the Vibe.
+- 🚀 **Quick Links**: Discord, Curriculum, Tools.
+- 🛠️ **Week 0 Mission**: Setup your accounts.
+
+**File:** `09_IMMEDIATE_ACTION_PLAN.md` (For Repo Maintainers!)
 - Your exact next steps (today + this week)
 - Reorganization checklist (2-3 hours, do first)
 - Daily plan for Week 1
