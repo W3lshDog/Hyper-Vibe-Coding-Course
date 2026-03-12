@@ -74,7 +74,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'cross-env VITE_E2E=1 npm run dev',
+    command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: false,
   },
