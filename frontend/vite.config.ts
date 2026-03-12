@@ -1,11 +1,8 @@
 import { defineConfig } from 'vite'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
-import babel from '@rolldown/plugin-babel'
 
-// https://vite.dev/config/
+// Vanilla HTML/CSS/JS site - no framework plugins needed
 export default defineConfig({
-  plugins: [
-    react(),
-    babel({ presets: [reactCompilerPreset()] })
-  ],
+  build: {
+    outDir: 'dist',
+  },
 })
