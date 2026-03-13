@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Course } from '../types/database';
+import type { Course } from '../types/database';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 import { Clock } from 'lucide-react';
@@ -14,7 +14,8 @@ export default function CourseCatalog() {
       const { data, error } = await supabase
         .from('courses')
         .select('*')
-        .eq('is_published', true);
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
       
       if (error) {
         console.error('Error fetching courses:', error);

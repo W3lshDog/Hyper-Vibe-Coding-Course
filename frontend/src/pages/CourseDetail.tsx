@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Course, Lesson } from '../types/database';
+import type { Course, Lesson } from '../types/database';
 import { useAuthStore } from '../context/auth';
 import { Button } from '../components/ui/Button';
 import { PlayCircle, Lock } from 'lucide-react';
@@ -14,6 +14,7 @@ export default function CourseDetail() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [enrolling, setEnrolling] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -64,23 +65,31 @@ export default function CourseDetail() {
       return;
     }
 
+    if (enrolling) return;
+    setEnrolling(true);
+
     // Mock payment process
     const confirm = window.confirm(`Confirm purchase for $${course?.price}?`);
-    if (!confirm) return;
+    if (!confirm) {
+      setEnrolling(false);
+      return;
+    }
 
     const { error } = await supabase
       .from('enrollments')
-      .insert({
+      .upsert({
         user_id: user.id,
         course_id: id,
         progress_percentage: 0
-      });
+      }, { onConflict: 'user_id,course_id' });
 
     if (error) {
       alert('Error enrolling: ' + error.message);
+      setEnrolling(false);
     } else {
       setIsEnrolled(true);
       navigate(`/learn/${id}`);
+      setEnrolling(false);
     }
   };
 
@@ -120,8 +129,8 @@ export default function CourseDetail() {
                   </Button>
                 </Link>
               ) : (
-                <Button size="lg" onClick={handleEnroll} className="w-full sm:w-auto">
-                  Enroll for ${course.price}
+                <Button size="lg" onClick={handleEnroll} className="w-full sm:w-auto" disabled={enrolling}>
+                  {enrolling ? 'Enrolling...' : `Enroll for $${course.price}`}
                 </Button>
               )}
             </div>

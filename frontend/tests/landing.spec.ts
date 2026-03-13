@@ -10,20 +10,20 @@ test('landing page has correct title and buttons', async ({ page }) => {
   const getStartedBtn = page.getByRole('button', { name: /Get Started/i }).first();
   await expect(getStartedBtn).toBeVisible();
 
-  // Check for the "View Courses" button
-  const viewCoursesBtn = page.getByRole('button', { name: /View Courses/i }).first();
-  await expect(viewCoursesBtn).toBeVisible();
+  // Check for the "View Pricing" button
+  const viewPricingBtn = page.getByRole('button', { name: /View Pricing/i }).first();
+  await expect(viewPricingBtn).toBeVisible();
 });
 
-test('can navigate to courses page', async ({ page }) => {
+test('can navigate to pricing page', async ({ page }) => {
   await page.goto('/');
   
-  // Click the "View Courses" button
-  await page.getByRole('button', { name: /View Courses/i }).first().click();
+  // Click the "View Pricing" button
+  await page.getByRole('button', { name: /View Pricing/i }).first().click();
 
-  // Expect URL to contain "courses"
-  await expect(page).toHaveURL(/.*courses/);
+  // Expect URL to contain "pricing"
+  await expect(page).toHaveURL(/.*pricing/);
   
   // Expect header to be visible
-  await expect(page.getByRole('heading', { name: /Course Catalog/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Pricing/i })).toBeVisible();
 });
