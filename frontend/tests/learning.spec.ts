@@ -28,9 +28,9 @@ test.describe('Enrollment & Learning', () => {
 
   test.beforeEach(async ({ page }) => {
     isEnrolled = false;
-    
-    await page.goto('/');
-    await page.evaluate(() => localStorage.clear());
+    await page.addInitScript(() => {
+      localStorage.clear()
+    })
 
     const fulfillJson = async (route: Route, payload: unknown, status = 200) => {
       await route.fulfill({
