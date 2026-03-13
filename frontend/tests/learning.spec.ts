@@ -43,7 +43,7 @@ test.describe('Enrollment & Learning', () => {
     const shouldReturnObject = (acceptHeader: string | undefined) =>
       Boolean(acceptHeader?.includes('application/vnd.pgrst.object+json'))
 
-    await page.route('**://dehhqwwsitvzgjrupapy.supabase.co/**', async (route) => {
+    await page.route('**://*.supabase.co/**', async (route) => {
       const request = route.request()
       const url = new URL(request.url())
       const accept = request.headers()['accept']
@@ -95,6 +95,7 @@ test.describe('Enrollment & Learning', () => {
       }
 
       if (url.pathname.startsWith('/rest/v1/courses')) {
+        console.log('MOCK courses:', request.method(), url.toString())
         const isSingle = url.searchParams.get('id')?.startsWith('eq.') ?? false
         await fulfillJson(route, asObject || isSingle ? course : [course])
         return
@@ -148,7 +149,7 @@ test.describe('Enrollment & Learning', () => {
         return
       }
 
-      await route.continue()
+      await route.fulfill({ status: 404, body: '' })
     })
 
     // Perform login
@@ -161,10 +162,12 @@ test.describe('Enrollment & Learning', () => {
   });
 
   test('should enroll in a course and complete a lesson', async ({ page }) => {
-    // Navigate to catalog
+    const coursesResponse = page.waitForResponse((response) => {
+      return response.url().includes('/rest/v1/courses') && response.status() === 200
+    })
+
     await page.goto('/courses');
-    
-    // Wait for courses to be visible before querying - relax selector to just wait for loading to finish or card to appear
+    await coursesResponse;
     await expect(page.getByText(course.title, { exact: false })).toBeVisible({ timeout: 15000 });
 
     // Click first course "View Course" button

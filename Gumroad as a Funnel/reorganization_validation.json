@@ -1,0 +1,18 @@
+{
+  "source_file_count": 3,
+  "source_section_count_raw": 336,
+  "source_section_count_unique": 273,
+  "duplicates_removed": 63,
+  "source_nonempty_lines": 3483,
+  "organized_file_count": 7,
+  "sections_per_file": {
+    "10_platform_architecture.md": 55,
+    "20_courses_curriculum.md": 97,
+    "30_gumroad_funnel.md": 37,
+    "40_execution_strategy.md": 4,
+    "50_misc_notes.md": 80
+  },
+  "output_section_hashes_unique": 273,
+  "output_section_hashes_total": 273,
+  "no_duplicate_sections_in_output": true
+}

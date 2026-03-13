@@ -1,0 +1,11 @@
+# Organized Knowledge Index
+
+This folder contains a deduplicated, topic-segmented reorganization of source material.
+
+## Files
+- 01_source_inventory.md
+- 10_platform_architecture.md
+- 20_courses_curriculum.md
+- 30_gumroad_funnel.md
+- 40_execution_strategy.md
+- 50_misc_notes.md
