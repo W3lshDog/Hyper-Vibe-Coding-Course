@@ -2089,4 +2089,4 @@ A) Tool-agnostic (works in any AI tool)
 B) Cursor-centric (prep for Course 3)
 
 And I'll deliver full 6-lesson markdown tomorrow.
-Then Gumroad becomes a 1-hour setup. 🚀 Haiku 4.5ExtendedClaude is AI and can make 
+Then Gumroad becomes a 1-hour setup. 🚀
