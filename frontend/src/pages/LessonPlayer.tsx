@@ -155,25 +155,26 @@ export default function LessonPlayer() {
   if (!course || !currentLesson) return <div className="p-8 text-center">Course content not found</div>;
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden" data-testid="lesson-player-container">
       {/* Sidebar */}
-      <div className="w-80 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
+      <div className="w-80 bg-white border-r border-gray-200 flex flex-col flex-shrink-0" data-testid="lesson-sidebar">
         <div className="p-4 border-b border-gray-200">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')} className="mb-2">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')} className="mb-2" data-testid="back-dashboard-btn">
             <ChevronLeft className="h-4 w-4 mr-1" /> Back to Dashboard
           </Button>
-          <h2 className="text-lg font-bold text-gray-900 truncate">{course.title}</h2>
+          <h2 className="text-lg font-bold text-gray-900 truncate" data-testid="course-title">{course.title}</h2>
           <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
             <div 
               className="bg-primary h-2 rounded-full transition-all duration-300" 
               style={{ width: `${(completedLessons.size / lessons.length) * 100}%` }}
+              data-testid="progress-bar"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1">{completedLessons.size} / {lessons.length} completed</p>
+          <p className="text-xs text-gray-500 mt-1" data-testid="progress-text">{completedLessons.size} / {lessons.length} completed</p>
         </div>
         
         <div className="flex-1 overflow-y-auto">
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-100" data-testid="lesson-list">
             {lessons.map((lesson, index) => {
               const isActive = index === currentLessonIndex;
               const isCompleted = completedLessons.has(lesson.id);
@@ -181,6 +182,7 @@ export default function LessonPlayer() {
               return (
                 <li 
                   key={lesson.id}
+                  data-testid={`lesson-item-${index}`}
                   className={cn(
                     "cursor-pointer hover:bg-gray-50 transition-colors",
                     isActive && "bg-primary/5 border-l-4 border-primary"
@@ -190,18 +192,18 @@ export default function LessonPlayer() {
                   <div className={cn("p-4 flex items-start", isActive ? "pl-3" : "pl-4")}>
                     <div className="flex-shrink-0 mt-0.5">
                       {isCompleted ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <CheckCircle className="h-5 w-5 text-green-500" data-testid={`lesson-completed-icon-${index}`} />
                       ) : (
                         <div className={cn(
                           "h-5 w-5 rounded-full border-2 flex items-center justify-center text-xs",
                           isActive ? "border-primary text-primary font-bold" : "border-gray-300 text-gray-500"
-                        )}>
+                        )} data-testid={`lesson-number-${index}`}>
                           {index + 1}
                         </div>
                       )}
                     </div>
                     <div className="ml-3">
-                      <p className={cn("text-sm font-medium", isActive ? "text-primary" : "text-gray-900")}>
+                      <p className={cn("text-sm font-medium", isActive ? "text-primary" : "text-gray-900")} data-testid={`lesson-title-${index}`}>
                         {lesson.title}
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">{Math.floor(lesson.duration_seconds / 60)} mins</p>
@@ -215,10 +217,10 @@ export default function LessonPlayer() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden" data-testid="main-content">
         <div className="flex-1 overflow-y-auto p-8">
           <div className="max-w-4xl mx-auto">
-            <div className="aspect-w-16 aspect-h-9 bg-black rounded-lg shadow-lg overflow-hidden mb-8 relative" style={{ paddingBottom: '56.25%' }}>
+            <div className="aspect-w-16 aspect-h-9 bg-black rounded-lg shadow-lg overflow-hidden mb-8 relative" style={{ paddingBottom: '56.25%' }} data-testid="video-player">
               {/* Mock Video Player */}
               <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white">
                 <div className="text-center">
@@ -230,18 +232,19 @@ export default function LessonPlayer() {
             </div>
 
             <div className="flex items-center justify-between mb-8">
-              <h1 className="text-2xl font-bold text-gray-900">{currentLesson.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900" data-testid="current-lesson-title">{currentLesson.title}</h1>
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
                   onClick={handlePrev} 
                   disabled={currentLessonIndex === 0}
+                  data-testid="prev-lesson-btn"
                 >
                   <ChevronLeft className="h-4 w-4 mr-2" /> Previous
                 </Button>
                 
                 {!completedLessons.has(currentLesson.id) && (
-                  <Button onClick={handleComplete} variant="default">
+                  <Button onClick={handleComplete} variant="default" data-testid="mark-complete-btn">
                     Mark as Complete
                   </Button>
                 )}
@@ -250,6 +253,7 @@ export default function LessonPlayer() {
                   variant="outline" 
                   onClick={handleNext} 
                   disabled={currentLessonIndex === lessons.length - 1}
+                  data-testid="next-lesson-btn"
                 >
                   Next <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
@@ -258,7 +262,7 @@ export default function LessonPlayer() {
 
             <div className="prose max-w-none">
               <h3 className="text-lg font-semibold mb-2">Lesson Content</h3>
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200" data-testid="lesson-content">
                 {currentLesson.content || "No text content for this lesson."}
               </div>
             </div>

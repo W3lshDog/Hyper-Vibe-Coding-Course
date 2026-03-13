@@ -1,6 +1,6 @@
 import { test, expect, type Route } from '@playwright/test';
 
-test.describe.skip('Enrollment & Learning', () => {
+test.describe('Enrollment & Learning', () => {
   const user = {
     id: 'test-user-id',
     email: 'test@example.com',
@@ -70,6 +70,17 @@ test.describe.skip('Enrollment & Learning', () => {
         await route.fulfill({ status: 204, body: '' })
         return
       }
+      
+      if (url.pathname.startsWith('/auth/v1/user')) {
+        await fulfillJson(route, {
+          id: user.id,
+          aud: 'authenticated',
+          role: 'authenticated',
+          email: user.email,
+          user_metadata: { full_name: user.fullName },
+        })
+        return
+      }
 
       if (url.pathname.startsWith('/rest/v1/users')) {
         const payload = {
@@ -137,7 +148,7 @@ test.describe.skip('Enrollment & Learning', () => {
         return
       }
 
-      await route.fulfill({ status: 404, body: '' })
+      await route.continue()
     })
 
     // Perform login
@@ -152,7 +163,9 @@ test.describe.skip('Enrollment & Learning', () => {
   test('should enroll in a course and complete a lesson', async ({ page }) => {
     // Navigate to catalog
     await page.goto('/courses');
-    await expect(page.getByText(course.title)).toBeVisible();
+    
+    // Wait for courses to be visible before querying - relax selector to just wait for loading to finish or card to appear
+    await expect(page.getByText(course.title, { exact: false })).toBeVisible({ timeout: 15000 });
 
     // Click first course "View Course" button
     await page.getByRole('button', { name: 'View Course' }).first().click();
@@ -177,18 +190,17 @@ test.describe.skip('Enrollment & Learning', () => {
     // Should navigate to learning page
     await expect(page).toHaveURL(/\/learn\//);
     
-    // Verify lesson player loaded
-    // This implies GET /enrollments was called and returned the object (since isEnrolled=true)
-    await expect(page.locator('text=Video Player Placeholder')).toBeVisible();
-    await expect(page.locator('h1')).toHaveText('Lesson 1');
+    // Verify lesson player loaded using stable testid
+    await expect(page.getByTestId('video-player')).toBeVisible();
+    await expect(page.getByTestId('current-lesson-title')).toHaveText('Lesson 1');
 
     // Click "Mark as Complete"
-    await page.click('button:has-text("Mark as Complete")');
+    await page.getByTestId('mark-complete-btn').click();
     
     // Verify checkmark appears in sidebar
-    await expect(page.locator('.text-green-500').first()).toBeVisible();
+    await expect(page.getByTestId('lesson-completed-icon-0')).toBeVisible();
     
     // Verify progress bar updated (visual check logic might be complex, just check existence)
-    await expect(page.locator('p:has-text("1 / 2 completed")')).toBeVisible();
+    await expect(page.getByTestId('progress-text')).toHaveText('1 / 2 completed');
   });
 });
